@@ -1,16 +1,17 @@
 package it.jaschke.alexandria.services;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.IntentService;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -40,6 +41,15 @@ public class BookService extends IntentService {
 
     public BookService() {
         super("Alexandria");
+    }
+
+
+    public static void startService(Context context, String ean) {
+        //Once we have an ISBN, start a book intent
+        Intent bookIntent = new Intent(context, BookService.class);
+        bookIntent.putExtra(BookService.EAN, ean);
+        bookIntent.setAction(BookService.FETCH_BOOK);
+        context.startService(bookIntent);
     }
 
     @Override
